@@ -1,0 +1,129 @@
+@startuml
+
+
+!$cla = "#ffffff"
+!$clb = "#333333"
+!$clstatebg = "#eeeeee"
+!$clnotebg = "#dc0451"
+!$fntsz = 16
+!$cornrsz = $fntsz/2
+
+skinparam shadowing false
+skinparam roundcorner $cornrsz
+skinparam BackgroundColor $cla
+skinparam ArrowColor $clb
+
+skinparam default {
+    FontColor $clb
+    FontSize $fntsz
+    FontName Fira Sans
+    MonospacedFontName Fira Sans
+}
+
+skinparam SequenceBox {
+    BackgroundColor #ddd
+    BorderColor #333
+}
+
+skinparam Actor {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+skinparam Node {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+skinparam Interface {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+skinparam Usecase {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+skinparam Rectangle {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+skinparam Note {
+    BackgroundColor $clnotebg
+    BorderColor $clnotebg
+    FontColor $cla
+}
+
+skinparam Package {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+skinparam Queue {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+skinparam Database {
+    BackgroundColor $cla
+    BorderColor $clb
+}
+
+'Note that in some versions of PlantUML the Background Col and the Border col on Collections is switched (so you might need to switch these around below)
+skinparam Collections {
+    BackgroundColor $clb
+    BorderColor $cla
+}
+
+skinparam Participant {
+    BackgroundColor $clb
+    BorderColor $clb
+    FontColor $cla
+    FontStyle bold
+}
+
+skinparam Sequence {
+    LifeLineBorderColor $clb
+}
+
+skinparam State {
+    AttributeFontColor $clb
+    FontColor $clb
+    AttributeFontSize $fntsz
+    FontSize $fntsz
+    AttributeFontName Fira Sans
+    FontName Fira Sans
+    StartColor green
+    EndColor red
+    BorderColor $clb
+    BackgroundColor $clstatebg
+    RoundCorner $cornrsz
+}
+
+skinparam shadowing false
+
+/' ********** EDIT BELOW HERE ********** '/
+
+box "Public"
+actor "Social Media Platform API" as SocMedPAPI
+actor "Social Media Group Admin" as SocMedGA
+actor "Social Media Group User" as SocMedGU
+actor "Customer" as Customer
+end box
+box "Supply Line"
+actor "Supply Line Phone Service" as SLPhone
+actor "Supply Line Admin" as SLAdmin
+actor "Supply Line User" as SLUser
+end box
+
+
+== Initial Contact from Customer ==
+autonumber
+
+Customer -> SLPhone : Customer phones the Supply Line phone line
+
+
+
+@enduml
