@@ -107,19 +107,57 @@ skinparam shadowing false
 /' ********** EDIT BELOW HERE ********** '/
 
 box "Public"
-actor "Social Media Platform API" as SocMedPAPI
+actor "Vulnerable Person" as Customer
+actor "Local Retailers" as LocalRetailer
+actor "Local Post Office" as LocalPostOffice
+entity "Postcards" as PhysicalMail
+end box
+
+box "Social Media Platform"
+entity "Social Media Platform API" as SocMedPAPI
 actor "Social Media Group Admin" as SocMedGA
 actor "Social Media Group User" as SocMedGU
-actor "Customer" as Customer
 end box
 box "Supply Line"
-actor "Supply Line Phone Service" as SLPhone
+entity "Supply Line Phone Service" as SLPhone
+entity "Supply Line CRM" as SLCRM
 actor "Supply Line Admin" as SLAdmin
 actor "Supply Line User" as SLUser
 end box
 
+box "Multual Aid Group / Trust Verifier"
+actor "Trust Verifier" as TrustVerify
+end box
 
-== Initial Contact from Customer ==
+box "Government / Local Authority"
+entity "Services" as GovernmentServices
+actor "Trusted Individual" as GovTrustIndividual
+end box
+
+box "Law Enforcement"
+actor "Local Police" as LocalPolice
+end box
+
+box "Communication Operators"
+entity "Communication Data Sources" as CommsData
+end box
+
+== Social Media Group Admin wants to set up an incoming Phone service ==
+autonumber
+SocMedGA -> SLCRM : SocMed Admin signs up for an account at SupplyLine
+SLCRM -> SocMedGA : Places account on 'Requires Verification' status, tells User, provides a code.
+SocMedGA -> TrustVerify : Tells Local Trust Verifier the code to authorise them.
+TrustVerify -> SLCRM : Uses code provided and their trusted id to authorise user.
+SLCRM -> SocMedGA : Informs SocMed Admin that trust has been identified
+SocMedGA -> SLCRM : Logs in and sets up profile.
+SocMedGA -> SLCRM : Connects account to SocMedia Page/Group (Facebook, etc)
+SocMedGA -> SLCRM : Requests phone number, is assigned this, sets up IVR based on template.
+SocMedGA -> SocMedGU : Informs everyone in the group that they have a new Supply Line Service
+SocMedGA -> PhysicalMail : Informs vulnerable people via postcards in community mail drop. (template for card available from Supply Line)
+SocMedGA -> LocalPostOffice : Provides Local Post Office with postcards for vulnerable people.
+SocMedGA -> LocalRetailer : Provides Local Retailers with postcards for vulnerable people.
+
+== Initial Contact from Vulnerable Person ==
 autonumber
 
 Customer -> SLPhone : Customer phones the Supply Line phone line
