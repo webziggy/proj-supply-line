@@ -1,4 +1,4 @@
-@startuml
+@startuml Supply Line
 
 
 !$cla = "#ffffff"
@@ -108,9 +108,7 @@ skinparam shadowing false
 
 box "Public"
 actor "Vulnerable Person" as Customer
-actor "Local Retailers" as LocalRetailer
-actor "Local Post Office" as LocalPostOffice
-entity "Postcards" as PhysicalMail
+actor "Local Community" as LocalCommunity
 end box
 
 box "Social Media Platform"
@@ -118,6 +116,7 @@ entity "Social Media Platform API" as SocMedPAPI
 actor "Social Media Group Admin" as SocMedGA
 actor "Social Media Group User" as SocMedGU
 end box
+
 box "Supply Line"
 entity "Supply Line Phone Service" as SLPhone
 entity "Supply Line CRM" as SLCRM
@@ -127,6 +126,7 @@ end box
 
 box "Multual Aid Group / Trust Verifier"
 actor "Trust Verifier" as TrustVerify
+entity "gov.uk Identity Verify" as IDVerification
 end box
 
 box "Government / Local Authority"
@@ -145,17 +145,24 @@ end box
 == Social Media Group Admin wants to set up an incoming Phone service ==
 autonumber
 SocMedGA -> SLCRM : SocMed Admin signs up for an account at SupplyLine
-SLCRM -> SocMedGA : Places account on 'Requires Verification' status, tells User, provides a code.
-SocMedGA -> TrustVerify : Tells Local Trust Verifier the code to authorise them.
-TrustVerify -> SLCRM : Uses code provided and their trusted id to authorise user.
+SLCRM -> SocMedGA : Informs new user that their account 'Requires \nTrust and ID Verification' status, tells User, provides a trust code.
+SocMedGA -> SLCRM : Provides Identity Verification (using gov.uk 'Identity' or similar)
+alt Trust Verification method - via Supply Line
+    SLCRM -> SLUser : Notification to Supply Line user to verify trust of sign up.
+    SLUser -> TrustVerify : Verify new user with trusted source (e.g. DBS/DSS, etc).
+    TrustVerify -> SLCRM : Confirm to Supply Line that the user is trusted.
+else Trust Verification method - via manual route to Trust Verifier
+    SLCRM -> SocMedGA : Informs new user of a Trust Verification code.
+    SocMedGA -> TrustVerify : Tells Local Trust Verifier the code to authorise them.
+    TrustVerify -> SLCRM : Uses code provided and their trusted id to authorise user.
+    SLCRM -> SocMedGA : Identity is verified
+end
 SLCRM -> SocMedGA : Informs SocMed Admin that trust has been identified
 SocMedGA -> SLCRM : Logs in and sets up profile.
 SocMedGA -> SLCRM : Connects account to SocMedia Page/Group (Facebook, etc)
 SocMedGA -> SLCRM : Requests phone number, is assigned this, sets up IVR based on template.
 SocMedGA -> SocMedGU : Informs everyone in the group that they have a new Supply Line Service
-SocMedGA -> PhysicalMail : Informs vulnerable people via postcards in community mail drop. (template for card available from Supply Line)
-SocMedGA -> LocalPostOffice : Provides Local Post Office with postcards for vulnerable people.
-SocMedGA -> LocalRetailer : Provides Local Retailers with postcards for vulnerable people.
+SocMedGA -> LocalCommunity : Informs vulnerable people via postcards in \ncommunity mail drop. (template for card available \nfrom Supply Line)
 
 == Initial Contact from Vulnerable Person ==
 autonumber
